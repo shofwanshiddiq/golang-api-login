@@ -22,3 +22,43 @@ Uses golang as main frameworks for build an API, with RESTful API for communicat
 * GORM (ORM for database operations)
 * JWT (JSON Web Token for authentication)
 * SHA-256 (Password hashing)
+
+# API Endpoints Documentation
+
+This document provides an overview of the API endpoints, their methods, and functionality.
+
+## Endpoints Table
+
+| Method     | API Endpoint               | Description                                      | Pages             |
+|------------|---------------------------|--------------------------------------------------|-------------------|
+| **POST**   | `/api/auth/register`       | Register a new user                             | Authentication    |
+| **POST**   | `/api/auth/login`          | Authenticate user and return JWT token         | Authentication    |
+| **GET**    | `/api/users`               | Fetch list of users                            | Users Page        |
+| **POST**   | `/api/users`               | Create a new user                              | Users Page        |
+| **POST**   | `/api/users_without_db`    | Create a user without storing in database      | Users Page        |
+| **GET**    | `/api/users_without_db`    | Fetch users created without database storage   | Users Page        |
+| **POST**   | `/api/tags`                | Create a new tag                               | Posts Page        |
+| **POST**   | `/api/posts`               | Create a new post                              | Posts Page        |
+| **GET**    | `/api/posts`               | Fetch list of posts                            | Posts Page        |
+| **GET**    | `/api/posts/{id}`          | Fetch a specific post by ID                    | Posts Page        |
+
+### Authentication
+- The authentication routes (`/api/auth/register` and `/api/auth/login`) handle user registration and authentication.
+- The login endpoint returns a JWT token that is required for accessing protected routes.
+
+### Users
+- The `/api/users` endpoints allow fetching and creating users.
+- The `/api/users_without_db` endpoints are for managing temporary users that are not stored in the database.
+
+### Posts & Tags
+- The `/api/posts` endpoints allow for creating and fetching posts.
+- The `/api/tags` endpoint is used to create new tags.
+
+### Security & Middleware
+- Protected routes require a valid JWT token for access.
+- Middleware ensures that unauthorized requests are blocked.
+
+## Running the API
+- Start the API using:
+  ```sh
+  go run main.go
