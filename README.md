@@ -58,7 +58,92 @@ This document provides an overview of the API endpoints, their methods, and func
 - Protected routes require a valid JWT token for access.
 - Middleware ensures that unauthorized requests are blocked.
 
-## Running the API
-- Start the API using:
-  ```sh
-  go run main.go
+# Database Strucrure
+## User Model
+```golang
+type User struct {
+	gorm.Model
+	Name     string `json:"name"`
+	Email    string `json:"email" gorm:"unique"`
+	Password string `json:"password"`
+}
+
+type LoginRequest struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"Password" binding:"required"`
+}
+```
+
+## Post Model
+```golang
+type Tags struct {
+	gorm.Model
+	Name  string `json:"name" gorm:"unique"`
+	Posts []Post `json:"posts" gorm:"many2many:post_tags"`
+}
+
+type Post struct {
+	gorm.Model
+	Title   string `json:"title"`
+	Content string `json:"content"`
+	UserID  uint   `json:"-"`
+	User    User   `json:"author" gorm:"foreignKey:UserID"`
+	Tags    []Tags `json:"tags" gorm:"many2many:post_tags"`
+}
+
+type PostTag struct {
+	PostID uint `gorm:"primaryKey"`
+	TagID  uint `gorm:"primaryKey"`
+}
+```
+
+# Golang API Starter Guide
+
+This guide will help you set up and run the Golang API using Gin-Gonic, GORM, and MySQL.
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+- [Golang](https://go.dev/dl/) (latest version)
+- [MySQL](https://dev.mysql.com/downloads/)
+- [Git](https://git-scm.com/)
+
+## Initialization
+
+Follow these steps to set up the project:
+
+### 1. Initialize the Go Module
+Run the following command in the project directory:
+
+```sh
+go mod init api-integration
+```
+
+### 2. Install Dependencies
+Install the required packages:
+
+```sh
+go get -u github.com/gin-gonic/gin
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/mysql
+go get -u github.com/joho/godotenv
+```
+
+### 3. Configure Database
+Create a .env file in the root directory and add your database credentials:
+
+```env
+DB_USER=root
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=dbname
+
+JWT_SECRET_KEY=super_secret_key
+JWT_EXPIRATION_IN=24h
+```
+### 4. Run API
+```sh
+go run main.go
+```
