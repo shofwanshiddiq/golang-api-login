@@ -58,7 +58,7 @@ This document provides an overview of the API endpoints, their methods, and func
 - Protected routes require a valid JWT token for access.
 - Middleware ensures that unauthorized requests are blocked.
 
-# Database Strucrure
+# Database Structure
 ## User Model
 ```golang
 type User struct {
